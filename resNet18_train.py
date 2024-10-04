@@ -55,6 +55,7 @@ optimizer = torch.optim.SGD(model.fc.parameters(), lr=0.001, momentum=0.9)
 
 # Create data loaders for the train and validation datasets
 batch_size = 64 if device == 'cuda' else 32
+print("batch_size:", batch_size)
 train_loader = DataLoader(train_dataset, batch_size=batch_size , shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
