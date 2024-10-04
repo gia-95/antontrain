@@ -15,7 +15,7 @@ DIR_DATASET_VAL = "dataset_augm/val"
 DIR_SAVED_MODEL = "modelli_resNet18"
 DIR_HISTORIES = "histories"
 num_epochs = 35
-tipo_train = "casco_rota_bright"
+tipo_train = "maschera_OTT"
 now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
 
 ######################################################################
