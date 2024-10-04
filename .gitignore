@@ -1,0 +1,10 @@
+dataset/
+dataset_augm/
+
+*.pyc
+
+*.jpg
+*.jpeg
+*.png
+
+*.pth
