@@ -47,15 +47,12 @@ transform = transforms.Compose([
 train_dataset = ImageFolder(DIR_DATASET_TRAIN, transform=transform)
 val_dataset = ImageFolder(DIR_DATASET_VAL, transform=transform)
 
-print("\ntrain_dataset:",len(train_dataset), "frame\n")
-
 # Define the loss function and optimizer
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.fc.parameters(), lr=0.001, momentum=0.9)
 
 # Create data loaders for the train and validation datasets
 batch_size = 64 if device == 'cuda' else 32
-print("batch_size:", batch_size)
 train_loader = DataLoader(train_dataset, batch_size=batch_size , shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
@@ -64,7 +61,7 @@ history = []
 
 def train(model, train_loader, val_loader, criterion, optimizer, num_epochs):
     
-    print("-------- TRAINING ----------")
+    print("--------------------------------  TRAINING  -------------------------------------")
     
     # Train the model for the specified number of epochs
     for epoch in range(num_epochs):
@@ -132,7 +129,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs):
         print('Epoch [{}/{}], train loss: {:.4f}, train acc: {:.4f}, val loss: {:.4f}, val acc: {:.4f}'
               .format(epoch+1, num_epochs, train_loss, train_acc, val_loss, val_acc))
         
-        history.append((epoch+1, train_loss.item(), train_acc.item(), val_loss.item(), val_acc.item()))
+        history.append((epoch+1, train_loss, train_acc.item(), val_loss, val_acc.item()))
         
     print(history)
     ### Save history
@@ -143,6 +140,10 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs):
         print("Errore write-file!")
         
 
+
+print("\ndevice:",device)
+print("train_dataset:",len(train_dataset), "frame")
+print("batch_size:", batch_size, "\n")
 
 # Set the device
 model.to(device)
