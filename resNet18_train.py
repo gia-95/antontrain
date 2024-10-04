@@ -10,8 +10,8 @@ import datetime
 
 ############################# PARAMETRI ############################
 
-DIR_DATASET_TRAIN = "dataset_augm/train"
-DIR_DATASET_VAL = "dataset_augm/val"
+DIR_DATASET_TRAIN = "/Users/gmarini/Desktop/INAIL_mio/mediapipe_mio/dataset/maschera/train"
+DIR_DATASET_VAL = "/Users/gmarini/Desktop/INAIL_mio/mediapipe_mio/dataset/maschera/val"
 DIR_SAVED_MODEL = "modelli_resNet18"
 DIR_HISTORIES = "histories"
 num_epochs = 35
