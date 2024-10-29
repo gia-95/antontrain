@@ -10,12 +10,15 @@ import datetime
 
 ############################# PARAMETRI ############################
 
-DIR_DATASET_TRAIN = "/Users/gmarini/Desktop/INAIL_mio/mediapipe_mio/dataset/maschera/train"
-DIR_DATASET_VAL = "/Users/gmarini/Desktop/INAIL_mio/mediapipe_mio/dataset/maschera/val"
+num_classes = 3 # RICORDATI QUESTO!!!!
+
+DIR_DATASET_TRAIN = "dataset/train"
+DIR_DATASET_VAL = "dataset/val"
 DIR_SAVED_MODEL = "modelli_resNet18"
 DIR_HISTORIES = "histories"
-num_epochs = 35
-tipo_train = "maschera_OTT"
+DIR_CHECKPOINTS = "checkpoints"
+num_epochs = 10
+tipo_train = "guanti_MAC_resNet50"
 now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
 
 ######################################################################
@@ -24,14 +27,13 @@ now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Load the pre-trained ResNet-18 model
-model = models.resnet18(pretrained=True)
+model = models.resnet50(pretrained=True)
 
 # Freeze all the pre-trained layers
 for param in model.parameters():
     param.requires_grad = False
 
 # Modify the last layer of the model
-num_classes = 2 # replace with the number of classes in your dataset
 model.fc = torch.nn.Linear(model.fc.in_features, num_classes)
 
 
@@ -129,7 +131,17 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs):
         print('Epoch [{}/{}], train loss: {:.4f}, train acc: {:.4f}, val loss: {:.4f}, val acc: {:.4f}'
               .format(epoch+1, num_epochs, train_loss, train_acc, val_loss, val_acc))
         
+        # Appen current parameters on history
         history.append((epoch+1, train_loss, train_acc.item(), val_loss, val_acc.item()))
+        
+        # Save current checkpoint
+        torch.save({
+            'epoch': epoch+1,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': val_loss,
+            }, os.path.join(DIR_CHECKPOINTS, f"checkpoint_ep{epoch+1}_{str(round(val_acc.item(), 4)).replace('.','')}.pt")) 
+        
         
     print(history)
     ### Save history
